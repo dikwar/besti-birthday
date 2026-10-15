@@ -25,7 +25,6 @@
             position: relative;
         }
 
-        /* Container dibuat agak transparan agar background belakang kelihatan di HP */
         .container {
             position: relative;
             z-index: 1;
@@ -471,7 +470,7 @@
             transform: translateY(0);
         }
 
-        /* --- GALERI FOTO SLIDESHOW & VIDEO GAMEPLAY FF --- */
+        /* --- GALERI FOTO SLIDESHOW & VIDEO --- */
         .photo-stream {
             display: none;
             width: 100vw;
@@ -523,7 +522,7 @@
         .film-card:nth-child(2) { animation: fadeInOut 4s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 4.5s; }
         .film-card:nth-child(3) { animation: fadeInOut 4s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 8.5s; }
 
-        /* Video Gameplay FF Box */
+        /* Video Box */
         .video-reference-box {
             display: none;
             width: 100vw;
@@ -801,11 +800,11 @@
                 </div>
             </div>
 
-            <!-- Video Gameplay FF -->
+            <!-- Video Kenangan Anda -->
             <div class="video-reference-box" id="videoReferenceBox">
-                <div class="video-title">🎥 Video Gameplay Free Fire Kita</div>
+                <div class="video-title">🎥 Video Kenangan Spesial Kita</div>
                 <video id="refVideo" controls playsinline preload="auto">
-                    <source src="gameplay-ff.mp4" type="video/mp4">
+                    <source src="video.mp4" type="video/mp4">
                     Browser Anda tidak mendukung video.
                 </video>
             </div>
@@ -820,9 +819,9 @@
             </div>
         </div>
 
-        <button class="btn-luxury" id="btnConfetti" style="display: none;" onclick="wearHatAndCelebrate()">Kirim Ledakan Kembang Api 🎉</button>
+        <button class="btn-luxury" id="btnConfetti" style="display: block;" onclick="triggerConfettiAgain()">Kirim Ledakan Kembang Api 🎉</button>
         
-        <!-- Tombol Tambahan: Buat QR Code Love -->
+        <!-- Tombol QR Code Love -->
         <button class="btn-luxury" style="background: linear-gradient(135deg, #ff4757, #ff6b81); margin-top: 8px;" onclick="showQRCode()">Buat QR Code Love 🤍</button>
 
         <div class="nav-links">
@@ -1106,7 +1105,7 @@
         }, totalDuration);
     }
 
-    // Aksi Klik Topi: Confetti -> Slideshow Foto -> Video Gameplay FF -> Beruang Pamit
+    // Aksi Klik Topi: Confetti -> Slideshow Foto -> Video Kenangan -> Beruang Pamit
     function wearHatAndCelebrate() {
         const hat = document.getElementById("interactiveHat");
         if (hat.classList.contains("taken")) return;
@@ -1131,7 +1130,7 @@
         const roll = document.getElementById("cinematicPhotoRoll");
         roll.style.display = "block";
 
-        // 4. Setelah slideshow foto selesai (~12.5 detik), tampilkan Video Gameplay FF
+        // 4. Setelah slideshow foto selesai (~12.5 detik), tampilkan Video Kenangan
         setTimeout(() => {
             roll.style.display = "none";
             const videoBox = document.getElementById("videoReferenceBox");
@@ -1143,7 +1142,7 @@
                 console.log("Autoplay diblokir browser");
             });
 
-            // 5. Durasi video gameplay diputar, lalu beruang muncul pamit
+            // 5. Durasi video diputar (~25 detik), lalu beruang muncul pamit
             setTimeout(() => {
                 videoBox.style.display = "none";
                 refVideo.pause();
@@ -1161,7 +1160,7 @@
                     bear.classList.add("walking-out-bear");
                 }, 6000);
 
-            }, 9500);
+            }, 25000);
 
         }, 12500);
     }
