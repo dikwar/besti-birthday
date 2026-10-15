@@ -633,6 +633,10 @@
 </head>
 <body>
 
+<!-- Elemen Audio HTML langsung di dalam Body agar dibaca dengan stabil oleh browser -->
+<audio id="shapeAudio" src="shape.mpeg" loop preload="auto"></audio>
+<audio id="nightAudio" src="night.mpeg" loop preload="auto"></audio>
+
 <div class="container" style="position: relative;">
     
     <!-- Misi Lampu Neon -->
@@ -722,7 +726,7 @@
         </div>
     </div>
 
-    <!-- TAHAP 3: MEMORY LANE (Gunakan foto memory1.jpeg, memory2.jpeg, memory3.jpeg) -->
+    <!-- TAHAP 3: MEMORY LANE -->
     <div id="screen-timeline" class="screen">
         <h1 class="title" style="margin-bottom: 15px; font-size: 1.4rem;">Memory Lane 🎞️</h1>
         <div class="timeline-box" id="timelineContent">
@@ -782,7 +786,7 @@
                 </div>
             </div>
             
-            <!-- Galeri Foto Slideshow Akhir (Gunakan foto final1.jpeg, final2.jpeg, final3.jpeg) -->
+            <!-- Galeri Foto Slideshow Akhir -->
             <div class="photo-stream" id="cinematicPhotoRoll">
                 <div class="cinematic-film">
                     <div class="film-card">
@@ -851,13 +855,9 @@
     
     let litLights = { 1: false, 2: false, 3: false };
 
-    // Audio 1: shape.mpeg untuk Memory Lane
-    const shapeAudio = new Audio("shape.mpeg");
-    shapeAudio.loop = true;
-
-    // Audio 2: night.mpeg untuk halaman Final / Pesan Terakhir
-    const nightAudio = new Audio("night.mpeg");
-    nightAudio.loop = true;
+    // Mengambil elemen audio langsung dari HTML body
+    const shapeAudio = document.getElementById("shapeAudio");
+    const nightAudio = document.getElementById("nightAudio");
 
     const emotionalAudio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
     emotionalAudio.loop = true;
@@ -1075,7 +1075,7 @@
         setTimeout(() => { chatStep = 3; nextChatStep(); }, 3500);
     }
 
-    // Masuk ke Memory Lane: Putar shape.mpeg otomatis & Typewriter 380ms
+    // Masuk ke Memory Lane: Putar shape.mpeg otomatis saat tombol diklik
     function switchToTimeline() {
         if (emotionalAudio) {
             emotionalAudio.pause();
@@ -1089,7 +1089,7 @@
             document.getElementById("songTitleDisplay").innerText = "Shape of You 🎵";
             document.getElementById("songStatus").innerText = "Now Playing 🎶";
         }).catch(e => {
-            console.log("Autoplay musik dicegah browser.");
+            console.log("Autoplay dicegah browser, silakan klik vinyl player.");
         });
 
         switchScreen('screen-timeline');
@@ -1106,7 +1106,7 @@
         });
     }
 
-    // Pindah ke Halaman Final: Matikan shape.mpeg, otomatis putar night.mpeg
+    // Pindah ke Halaman Final: Matikan shape.mpeg, putar night.mpeg secara otomatis saat tombol diklik
     function goToFinal() {
         if (shapeAudio) {
             shapeAudio.pause();
@@ -1120,7 +1120,7 @@
             document.getElementById("songTitleDisplay").innerText = "Night Music 🎵";
             document.getElementById("songStatus").innerText = "Now Playing 🎶";
         }).catch(e => {
-            console.log("Autoplay musik dicegah browser.");
+            console.log("Autoplay dicegah browser, silakan klik vinyl player.");
         });
 
         switchScreen('screen-main');
