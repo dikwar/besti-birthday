@@ -14,7 +14,7 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         body {
-            background: url('https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background: linear-gradient(rgba(10, 10, 15, 0.5), rgba(10, 10, 15, 0.5)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1000&q=80') no-repeat center center fixed;
             background-size: cover;
             color: #f3f3f6;
             min-height: 100vh;
@@ -24,25 +24,19 @@
             overflow-x: hidden;
             position: relative;
         }
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 10, 15, 0.85);
-            z-index: 0;
-        }
 
+        /* Container dibuat agak transparan agar background belakang kelihatan di HP */
         .container {
             position: relative;
             z-index: 1;
             width: 100%;
             max-width: 440px;
             min-height: 100vh;
-            background: rgba(20, 19, 26, 0.92);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-left: 1px solid rgba(255, 255, 255, 0.1);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(20, 19, 26, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -320,7 +314,7 @@
         #light3 { bottom: 20px; left: 50%; transform: translateX(-50%); }
 
         .mission-bubble {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 117, 140, 0.4);
             border-radius: 14px;
             padding: 10px 14px;
@@ -368,8 +362,8 @@
             width: 240px;
         }
         .num-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 50%;
             width: 58px; height: 58px;
             font-size: 1.1rem;
@@ -387,16 +381,16 @@
         }
 
         .chat-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(20, 19, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 20px;
             padding: 25px 20px;
             width: 100%;
             text-align: center;
         }
         .chat-bubble {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 15px;
             padding: 18px;
             font-size: 0.95rem;
@@ -420,8 +414,8 @@
         .timeline-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
         
         .story-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(20, 19, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 16px;
             padding: 15px;
             margin-bottom: 15px;
@@ -437,14 +431,13 @@
         .story-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 6px; color: #fff; }
         .story-desc { font-size: 0.8rem; color: #c0c0cb; line-height: 1.5; }
 
-        /* Final Screen Container */
+        /* Final Screen Container Tembus Pandang */
         .final-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(20, 19, 26, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 20px;
             padding: 20px;
             width: 100%;
-            text-align: left;
             max-height: 85vh;
             overflow-y: auto;
             scrollbar-width: thin;
@@ -539,7 +532,7 @@
             text-align: center;
             position: relative;
             z-index: 10;
-            background: rgba(10, 10, 15, 0.95);
+            background: rgba(10, 10, 15, 0.9);
         }
         .video-title {
             font-family: 'Playfair Display', serif;
@@ -557,14 +550,45 @@
             background: #000;
         }
 
+        /* QR Code Modal Style */
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .qr-content {
+            background: #1a1924;
+            border: 2px solid #ff758c;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 117, 140, 0.4);
+            max-width: 320px;
+            width: 90%;
+        }
+        .qr-content img {
+            width: 210px;
+            height: 210px;
+            border-radius: 12px;
+            margin: 10px 0;
+            background: #fff;
+            padding: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
         /* Vinyl Player */
         .vinyl-box {
             display: flex;
             align-items: center;
-            background: rgba(0,0,0,0.35);
+            background: rgba(0,0,0,0.4);
             padding: 8px 12px;
             border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 10px;
             cursor: pointer;
             transition: 0.3s;
@@ -777,7 +801,7 @@
                 </div>
             </div>
 
-            <!-- Video Gameplay FF (Ganti 'gameplay-ff.mp4' dengan nama file video Anda) -->
+            <!-- Video Gameplay FF -->
             <div class="video-reference-box" id="videoReferenceBox">
                 <div class="video-title">🎥 Video Gameplay Free Fire Kita</div>
                 <video id="refVideo" controls playsinline preload="auto">
@@ -798,12 +822,25 @@
 
         <button class="btn-luxury" id="btnConfetti" style="display: none;" onclick="wearHatAndCelebrate()">Kirim Ledakan Kembang Api 🎉</button>
         
+        <!-- Tombol Tambahan: Buat QR Code Love -->
+        <button class="btn-luxury" style="background: linear-gradient(135deg, #ff4757, #ff6b81); margin-top: 8px;" onclick="showQRCode()">Buat QR Code Love 🤍</button>
+
         <div class="nav-links">
             <span onclick="lockApp()">Lock Again 🔒</span>
             <span onclick="shareWA()">Share WhatsApp 💬</span>
         </div>
     </div>
 
+</div>
+
+<!-- Modal QR Code Love -->
+<div class="qr-modal" id="qrModal" onclick="closeQRCode()">
+    <div class="qr-content" onclick="event.stopPropagation()">
+        <h3 style="font-family: 'Playfair Display', serif; color: #ff758c; margin-bottom: 5px;">Scan QR Code Love 🤍</h3>
+        <p style="font-size: 0.75rem; color: #bbb; margin-bottom: 10px;">Scan pakai kamera HP untuk buka web ini!</p>
+        <img id="heartQrImg" src="" alt="QR Code Love">
+        <button class="btn-luxury" style="padding: 8px 15px; font-size: 0.8rem; margin-top: 5px;" onclick="closeQRCode()">Tutup</button>
+    </div>
 </div>
 
 <script>
@@ -1069,7 +1106,7 @@
         }, totalDuration);
     }
 
-    // Aksi Klik Topi: Confetti -> Slideshow Foto -> Video Gameplay FF (Buka Tombol Play) -> Beruang Pamit
+    // Aksi Klik Topi: Confetti -> Slideshow Foto -> Video Gameplay FF -> Beruang Pamit
     function wearHatAndCelebrate() {
         const hat = document.getElementById("interactiveHat");
         if (hat.classList.contains("taken")) return;
@@ -1094,20 +1131,19 @@
         const roll = document.getElementById("cinematicPhotoRoll");
         roll.style.display = "block";
 
-        // 4. Setelah slideshow foto selesai (~12.5 detik), tampilkan Video Gameplay FF dengan tombol kontrol (mencegah layar hitam akibat blokir browser)
+        // 4. Setelah slideshow foto selesai (~12.5 detik), tampilkan Video Gameplay FF
         setTimeout(() => {
             roll.style.display = "none";
             const videoBox = document.getElementById("videoReferenceBox");
             const refVideo = document.getElementById("refVideo");
             videoBox.style.display = "block";
             
-            // Berikan jeda sebentar agar browser siap merender video lokal
             refVideo.load();
             refVideo.play().catch(e => {
-                console.log("Autoplay diblokir browser, pengguna dapat menekan tombol play manual.");
+                console.log("Autoplay diblokir browser");
             });
 
-            // 5. Durasi video gameplay diputar otomatis, lalu beruang muncul pamit
+            // 5. Durasi video gameplay diputar, lalu beruang muncul pamit
             setTimeout(() => {
                 videoBox.style.display = "none";
                 refVideo.pause();
@@ -1122,12 +1158,27 @@
                     speech.classList.remove("show");
                     bear.classList.remove("walking-bear");
                     void bear.offsetWidth;
-                    bear.classList.add("walking-out-bear"); // Beruang berjalan keluar layar
+                    bear.classList.add("walking-out-bear");
                 }, 6000);
 
-            }, 9500); // Sesuaikan dengan durasi video (9.5 detik)
+            }, 9500);
 
-        }, 12500); // Durasi slideshow foto
+        }, 12500);
+    }
+
+    // Fungsi Menampilkan QR Code Berbentuk Love
+    function showQRCode() {
+        playSound('tap');
+        const currentUrl = window.location.href;
+        const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(currentUrl)}`;
+        
+        document.getElementById('heartQrImg').src = qrApiUrl;
+        document.getElementById('qrModal').style.display = 'flex';
+    }
+
+    function closeQRCode() {
+        playSound('tap');
+        document.getElementById('qrModal').style.display = 'none';
     }
 
     function triggerConfettiAgain() {
@@ -1162,7 +1213,6 @@
         
         document.querySelectorAll('.neon-light').forEach(el => el.classList.remove("lit"));
         
-        // Reset Final Screen
         document.querySelectorAll('.word-reveal').forEach(el => el.classList.remove('show'));
         document.getElementById("cinematicPhotoRoll").style.display = "none";
         document.getElementById("videoReferenceBox").style.display = "none";
