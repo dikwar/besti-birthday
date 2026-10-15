@@ -851,8 +851,8 @@
     
     let litLights = { 1: false, 2: false, 3: false };
 
-    // Audio instrumental baru yang dikirimkan
-    const bgAudio = new Audio("https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=romantic-guitars-112157.mp3");
+    // Lagu utama A Thousand Years yang otomatis berputar dari awal Memory Lane
+    const bgAudio = new Audio("https://archive.org/download/JhePlalist/A%20Thousand%20Years%20-%20Christina%20Perri.mp3");
     bgAudio.loop = true;
 
     const emotionalAudio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
@@ -898,11 +898,9 @@
 
     // Fungsi membungkus teks menjadi per-kata untuk efek typewriter
     function prepareWordReveal() {
-        // Final screen
         const finalContainer = document.getElementById('finalCardContent');
         processContainerText(finalContainer);
 
-        // Timeline / Memory Lane screen
         const timelineContainer = document.getElementById('timelineContent');
         processContainerText(timelineContainer);
     }
@@ -1073,20 +1071,20 @@
         setTimeout(() => { chatStep = 3; nextChatStep(); }, 3500);
     }
 
-    // Fungsi Masuk ke Memory Lane sekaligus Otomatis Memutar Musik dan Typewriter 380ms
+    // Fungsi Masuk ke Memory Lane sekaligus Otomatis Memutar Lagu A Thousand Years & Typewriter 380ms
     function switchToTimeline() {
         if (emotionalAudio) {
             emotionalAudio.pause();
             emotionalAudio.currentTime = 0;
         }
         
-        // Memutar instrumen musik secara otomatis dari awal kata di Memory Lane
+        // Memutar lagu A Thousand Years secara otomatis dari awal kata di Memory Lane
         bgAudio.play().then(() => {
             isPlaying = true;
             const vinyl = document.getElementById("vinyl");
             if (vinyl) vinyl.classList.add("playing");
             const status = document.getElementById("songStatus");
-            if (status) status.innerText = "Now Playing: Romantic Guitar 🎶";
+            if (status) status.innerText = "Now Playing: A Thousand Years 🎶";
         }).catch(e => {
             console.log("Autoplay musik dicegah browser, silakan klik tombol vinyl jika diperlukan.");
         });
@@ -1110,7 +1108,6 @@
     function goToFinal() {
         switchScreen('screen-main');
 
-        // Reset semua kata di final screen
         const finalCard = document.getElementById('finalCardContent');
         const wordElements = finalCard.querySelectorAll('.word-reveal');
         wordElements.forEach(el => el.classList.remove('show'));
@@ -1126,7 +1123,6 @@
             }, index * 380);
         });
 
-        // Setelah seluruh kata selesai muncul, beruang berjalan masuk membawa topi
         const totalDuration = wordElements.length * 380 + 1000;
         setTimeout(() => {
             bear.style.display = "block";
@@ -1148,13 +1144,11 @@
         if (hat.classList.contains("taken")) return;
         hat.classList.add("taken");
 
-        // 1. Sembunyikan dialog & beruang sementara
         const speech = document.getElementById("bearSpeechText");
         speech.classList.remove("show");
         const bear = document.getElementById("finalBear");
         bear.style.display = "none";
 
-        // 2. Ledakan kembang api meriah
         confetti({ particleCount: 220, spread: 130, origin: { y: 0.5 }, colors: ['#ff758c', '#ffd1dc', '#2ed573', '#ffa502', '#3742fa', '#ff4757'] });
         setTimeout(() => {
             confetti({ particleCount: 150, angle: 60, spread: 100, origin: { x: 0, y: 0.6 } });
@@ -1163,11 +1157,9 @@
 
         playSound('success');
 
-        // 3. Tampilkan Slideshow Foto
         const roll = document.getElementById("cinematicPhotoRoll");
         roll.style.display = "block";
 
-        // 4. Setelah slideshow foto selesai (~12.5 detik), tampilkan Video Kenangan
         setTimeout(() => {
             roll.style.display = "none";
             const videoBox = document.getElementById("videoReferenceBox");
@@ -1179,7 +1171,6 @@
                 console.log("Autoplay diblokir browser");
             });
 
-            // 5. Durasi video diputar (~25 detik), lalu beruang muncul pamit
             setTimeout(() => {
                 videoBox.style.display = "none";
                 refVideo.pause();
@@ -1228,7 +1219,7 @@
         if(!isPlaying) {
             bgAudio.play();
             vinyl.classList.add("playing");
-            status.innerText = "Now Playing: Romantic Guitar 🎶";
+            status.innerText = "Now Playing: A Thousand Years 🎶";
             isPlaying = true;
         } else {
             bgAudio.pause();
@@ -1244,7 +1235,7 @@
         const vinyl = document.getElementById("vinyl");
         if (vinyl) vinyl.classList.remove("playing");
         const status = document.getElementById("songStatus");
-        if (status) status.innerText = "Click to Play/Pause (Romantic Guitar)";
+        if (status) status.innerText = "Click to Play/Pause (Christina Perri)";
 
         emotionalAudio.pause();
         emotionalAudio.currentTime = 0;
