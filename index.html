@@ -458,7 +458,7 @@
             margin-bottom: 10px;
         }
 
-        /* Efek Teks Per Kata (380ms Santai) */
+        /* Efek Teks Per Kata */
         .word-reveal {
             opacity: 0;
             display: inline-block;
@@ -633,7 +633,7 @@
 </head>
 <body>
 
-<!-- Elemen Audio HTML langsung di dalam Body agar dibaca dengan stabil oleh browser -->
+<!-- Elemen Audio HTML -->
 <audio id="shapeAudio" src="shape.mpeg" loop preload="auto"></audio>
 <audio id="nightAudio" src="night.mpeg" loop preload="auto"></audio>
 
@@ -733,20 +733,20 @@
             <div class="story-card">
                 <img src="memory1.jpeg" alt="Memory 1">
                 <div class="story-year">Babak 01 • Awal Mula</div>
-                <div class="story-title">Masa-masa Jaim</div>
-                <div class="story-desc">Pertama kali kenal keliatan pendiam dan jaim banget. Enggak nyangka sekarang malah jadi partner paling barbar dan tahu semua aib masing-masing wkwk.</div>
+                <div class="story-title">Pertama Kali Kenal</div>
+                <div class="story-desc">Pertama kali kenal aku mikir e si kita ga bakal sedeket ini, tapi waktu terus berjalan sampe kita di titik ini 🫰🏼</div>
             </div>
             <div class="story-card">
                 <img src="memory2.jpeg" alt="Memory 2">
-                <div class="story-year">Babak 02 • Sering Bareng</div>
-                <div class="story-title">Tempat Curhat & Sambat</div>
-                <div class="story-desc">Dari urusan tugas/kerjaan numpuk sampai drama percintaan yang enggak ada habisnya. Terima kasih selalu ada buat dengerin sambatan tiap malam!</div>
+                <div class="story-year">Babak 02 • Perjalanan Bersama</div>
+                <div class="story-title">Saling Menguatkan</div>
+                <div class="story-desc">Terimakasih sudah bertahan sejauh ini, Terimakasih sudah berusaha ceria disela-sela kesedihan.</div>
             </div>
             <div class="story-card">
                 <img src="memory3.jpeg" alt="Memory 3">
                 <div class="story-year">Babak 03 • Hari Ini</div>
                 <div class="story-title">Level Up Day! 🎉</div>
-                <div class="story-desc">Sekarang umur bertambah lagi. Semoga makin bijak, rezekinya lancar, dan tetap jadi sahabat yang seru diajak susah maupun senang.</div>
+                <div class="story-desc">Dengan bertambahnya umur mu yang sekarang ini, semoga kamu menjadi pribadi yang lebih baik lagi, lancar segala urusan perkuliahan atau diluar perkuliahan, banyak rezekinya, dan sehat selalu.</div>
             </div>
         </div>
         <button class="btn-luxury" style="display: block;" onclick="goToFinal()">Buka Pesan Terakhir 🤍</button>
@@ -755,12 +755,11 @@
     <!-- TAHAP 4: FINAL SCREEN -->
     <div id="screen-main" class="screen">
         <div class="final-card" id="finalCardContent">
-            <h2>To My Bestie, ✨</h2>
-            <p>Terima kasih ya sudah jadi bestie terbaik yang selalu sabar menghadapi segala tingkah koplak dan sambatanku tiap hari... 🤍</p>
-            <p>Dari partner ngerjain tugas numpuk, tempat curhat tengah malam, sampai partner kulineran pedes yang gak ada obatnya.</p>
-            <p>Semoga di umur yang baru ini rezekinya makin lancar, semua impian kerenmu tercapai, dan bahagia selalu...</p>
-            <p>Dan yang paling penting: jangan pernah berubah jadi orang nyebelin ya wkwk! 😜</p>
-            <p><b>HAPPY BIRTHDAY TO MY BESTIE! 🎂🎉🥳</b></p>
+            <h2>To My Besties✨</h2>
+            <p>Terimakasih ya sudah jadi teman terbaik kita yang slalu sabar ngadepin tingkah laku kita berdua, slalu nerima baik buruk nya asa sama rana, slalu jadi tempat curhat terbaik, terus jadi manusia cerewet yang kita kenal yaa 💙</p>
+            <p>Semoga di umur yang sekarang setiap lika-liku kehidupan kamu always win, rezekinya melimpah, dipertemukan orang-orang yang baik, dan di jauhkan dari segala hal yang buruk.</p>
+            <p>Hehe gatau ini mau ngetik kayak gimana lagi intinya ya gitu dehh xixixi...</p>
+            <p><b>HAPPY BIRTHDAY TO YOU PRETTY 💖</b></p>
 
             <!-- Beruang Muncul dari Samping Membawa Topi Ekstra -->
             <div class="bear-container walking-bear" id="finalBear">
@@ -795,7 +794,7 @@
                     </div>
                     <div class="film-card">
                         <img src="final2.jpeg" alt="Foto 2">
-                        <div class="film-caption">"Pendengar Terbaikku 🤍"</div>
+                        <div class="film-caption">"Tempat Curhat Terbaikku 🤍"</div>
                     </div>
                     <div class="film-card">
                         <img src="final3.jpeg" alt="Foto 3">
@@ -855,7 +854,6 @@
     
     let litLights = { 1: false, 2: false, 3: false };
 
-    // Mengambil elemen audio langsung dari HTML body
     const shapeAudio = document.getElementById("shapeAudio");
     const nightAudio = document.getElementById("nightAudio");
 
@@ -900,7 +898,6 @@
         }
     }
 
-    // Fungsi membungkus teks menjadi per-kata untuk efek typewriter
     function prepareWordReveal() {
         const finalContainer = document.getElementById('finalCardContent');
         processContainerText(finalContainer);
@@ -1075,7 +1072,6 @@
         setTimeout(() => { chatStep = 3; nextChatStep(); }, 3500);
     }
 
-    // Masuk ke Memory Lane: Putar shape.mpeg otomatis saat tombol diklik
     function switchToTimeline() {
         if (emotionalAudio) {
             emotionalAudio.pause();
@@ -1106,7 +1102,6 @@
         });
     }
 
-    // Pindah ke Halaman Final: Matikan shape.mpeg, putar night.mpeg secara otomatis saat tombol diklik
     function goToFinal() {
         if (shapeAudio) {
             shapeAudio.pause();
@@ -1154,7 +1149,6 @@
         }, totalDuration);
     }
 
-    // Aksi Klik Topi: Confetti -> Slideshow Foto -> Video Kenangan -> Beruang Pamit
     function wearHatAndCelebrate() {
         const hat = document.getElementById("interactiveHat");
         if (hat.classList.contains("taken")) return;
@@ -1209,7 +1203,6 @@
         }, 12500);
     }
 
-    // Fungsi Menampilkan QR Code Berbentuk Love
     function showQRCode() {
         playSound('tap');
         const currentUrl = window.location.href;
