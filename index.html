@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Surprise for You 🤍</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        body {
+            background: url('https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #f3f3f6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 15, 0.85);
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            min-height: 100vh;
+            background: rgba(20, 19, 26, 0.92);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            overflow-x: hidden;
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .screen.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* --- BERUANG FULL-BODY SUPER EKSPRESIF --- */
+        .bear-container {
+            width: 110px;
+            height: 100px;
+            margin: 0 auto 5px auto;
+            position: relative;
+            animation: floatBear 2.5s ease-in-out infinite;
+        }
+        @keyframes floatBear {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(1deg); }
+        }
+
+        @keyframes humanWalkSlow {
+            0% { transform: translateX(-260px) translateY(10px) rotate(-8deg); opacity: 0; }
+            30% { transform: translateX(-150px) translateY(-6px) rotate(4deg); opacity: 0.5; }
+            60% { transform: translateX(-60px) translateY(4px) rotate(-4deg); opacity: 0.8; }
+            100% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+        }
+        .walking-bear {
+            display: none;
+            animation: humanWalkSlow 3.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes humanWalkOut {
+            0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateX(260px) translateY(10px) rotate(8deg); opacity: 0; }
+        }
+        .walking-out-bear {
+            animation: humanWalkOut 3s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+        }
+
+        .bear-head {
+            width: 64px;
+            height: 54px;
+            background: #fff;
+            border: 3px solid #333;
+            border-radius: 50% 50% 45% 45%;
+            position: absolute;
+            top: 0; left: 23px;
+            z-index: 3;
+        }
+        .bear-ear {
+            width: 20px; height: 20px;
+            background: #fff;
+            border: 3px solid #333;
+            border-radius: 50%;
+            position: absolute;
+            top: -4px;
+            z-index: 2;
+        }
+        .bear-ear.left { left: 18px; }
+        .bear-ear.right { right: 18px; }
+
+        .party-hat {
+            position: absolute;
+            top: -26px; left: 50%;
+            transform: translateX(-50%) rotate(-10deg);
+            width: 0; height: 0;
+            border-left: 13px solid transparent;
+            border-right: 13px solid transparent;
+            border-bottom: 28px solid #ff758c;
+            z-index: 4;
+        }
+        .party-hat::after {
+            content: '✨';
+            position: absolute;
+            top: -10px; left: -5px;
+            font-size: 0.75rem;
+        }
+
+        .bear-body {
+            width: 58px;
+            height: 46px;
+            background: #fff;
+            border: 3px solid #333;
+            border-radius: 40% 40% 45% 45%;
+            position: absolute;
+            top: 45px; left: 26px;
+            z-index: 2;
+        }
+        
+        .arm {
+            width: 13px; height: 24px;
+            background: #fff;
+            border: 3px solid #333;
+            border-radius: 10px;
+            position: absolute;
+            top: 6px;
+            z-index: 1;
+            transition: transform 0.2s ease;
+        }
+        .arm.left { left: -8px; transform-origin: top right; transform: rotate(-15deg); }
+        .arm.right { right: -8px; transform-origin: top left; transform: rotate(20deg); }
+
+        .held-hat {
+            position: absolute;
+            bottom: -4px; right: -28px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            animation: bounceHat 0.9s infinite alternate;
+            z-index: 5;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+            transition: 0.3s;
+        }
+        .held-hat:hover { transform: scale(1.15); }
+        .held-hat.taken { display: none; }
+
+        @keyframes bounceHat {
+            0% { transform: translateY(0) scale(1) rotate(0deg); }
+            100% { transform: translateY(-10px) scale(1.2) rotate(15deg); }
+        }
+
+        .bear-speech {
+            position: absolute;
+            top: -75px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            line-height: 1.4;
+            min-width: 220px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 20;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .bear-speech.show { opacity: 1; }
+        .bear-speech::after {
+            content: '';
+            position: absolute;
+            bottom: -6px; left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid rgba(255, 255, 255, 0.95);
+        }
+
+        .leg {
+            width: 13px; height: 16px;
+            background: #fff;
+            border: 3px solid #333;
+            border-radius: 8px;
+            position: absolute;
+            bottom: -9px;
+            z-index: 1;
+        }
+        .leg.left { left: 11px; }
+        .leg.right { right: 11px; }
+
+        .eye {
+            width: 7px; height: 9px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            transition: 0.2s;
+        }
+        .eye.left { left: 16px; }
+        .eye.right { right: 16px; }
+
+        .blush {
+            width: 10px; height: 5px;
+            background: #ff94b8;
+            border-radius: 50%;
+            position: absolute;
+            top: 29px;
+            opacity: 0.8;
+        }
+        .blush.left { left: 9px; }
+        .blush.right { right: 9px; }
+
+        .nose {
+            width: 6px; height: 4px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 27px; left: 27px;
+        }
+        .mouth {
+            width: 10px; height: 5px;
+            border-bottom: 3px solid #333;
+            border-radius: 0 0 5px 5px;
+            position: absolute;
+            top: 33px; left: 25px;
+            transition: 0.2s;
+        }
+        .tongue {
+            position: absolute;
+            width: 7px; height: 0px;
+            background: #ff4757;
+            border: 2px solid #333;
+            border-radius: 0 0 4px 4px;
+            bottom: -5px; left: 1px;
+            transition: height 0.2s ease;
+        }
+
+        @keyframes mockWiggle {
+            0%, 100% { transform: rotate(0deg) translateX(0); }
+            20% { transform: rotate(-10deg) translateX(-3px); }
+            40% { transform: rotate(10deg) translateX(3px); }
+            60% { transform: rotate(-8deg) translateX(-2px); }
+            80% { transform: rotate(8deg) translateX(2px); }
+        }
+        .bear-container.teasing .bear-head { animation: mockWiggle 0.35s ease-in-out infinite; }
+        .bear-container.teasing .tongue { height: 11px; }
+        .bear-container.teasing .eye.right { height: 3px; top: 25px; border-radius: 0; }
+        .bear-container.teasing .arm.right { transform: rotate(-60deg) translateY(-8px); }
+
+        @keyframes fullBodyJump {
+            0%, 100% { transform: translateY(0) scale(1, 1); }
+            35% { transform: translateY(-30px) scale(0.95, 1.05); }
+            55% { transform: translateY(-35px) scale(1, 1); }
+            75% { transform: translateY(0) scale(1.15, 0.85); }
+        }
+        .bear-container.success-jump { animation: fullBodyJump 0.55s ease-in-out infinite; }
+        .bear-container.success-jump .arm.left { transform: rotate(-55deg) translateY(-5px); }
+        .bear-container.success-jump .arm.right { transform: rotate(55deg) translateY(-5px); }
+        .bear-container.happy .mouth { width: 16px; height: 8px; border-radius: 0 0 10px 10px; left: 26px; }
+
+        /* Misi Lampu Neon */
+        .neon-light {
+            position: absolute;
+            width: 24px; height: 24px;
+            background: rgba(255, 117, 140, 0.4);
+            border: 2px solid #ff758c;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 12px #ff758c;
+            animation: pulseLight 1.5s infinite alternate;
+            z-index: 10;
+        }
+        .neon-light.lit {
+            background: #2ed573;
+            border-color: #2ed573;
+            box-shadow: 0 0 18px #2ed573;
+            animation: none;
+        }
+        @keyframes pulseLight {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+
+        #light1 { top: 15px; left: 15px; }
+        #light2 { top: 15px; right: 15px; }
+        #light3 { bottom: 20px; left: 50%; transform: translateX(-50%); }
+
+        .mission-bubble {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 117, 140, 0.4);
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            color: #ffd1dc;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        h1.title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .passcode-dots {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+        .dot {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: 0.3s;
+        }
+        .dot.filled {
+            background: #ff758c;
+            border-color: #ff758c;
+            box-shadow: 0 0 12px rgba(255, 117, 140, 0.8);
+        }
+        .shake { animation: shake 0.4s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .keypad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            width: 240px;
+        }
+        .num-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            width: 58px; height: 58px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f3f3f6;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto;
+            transition: all 0.2s;
+        }
+        .num-btn:active {
+            background: rgba(255, 117, 140, 0.3);
+            border-color: #ff758c;
+            transform: scale(0.92);
+        }
+
+        .chat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 25px 20px;
+            width: 100%;
+            text-align: center;
+        }
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 18px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #f3f3f6;
+            margin-bottom: 20px;
+            min-height: 80px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Timeline Memory Lane */
+        .timeline-box {
+            width: 100%;
+            text-align: left;
+            max-height: 72vh;
+            overflow-y: auto;
+            padding-right: 5px;
+            scrollbar-width: thin;
+        }
+        .timeline-box::-webkit-scrollbar { width: 4px; }
+        .timeline-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+        
+        .story-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .story-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .story-year { font-size: 0.75rem; color: #ff758c; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+        .story-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 6px; color: #fff; }
+        .story-desc { font-size: 0.8rem; color: #c0c0cb; line-height: 1.5; }
+
+        /* Final Screen Container */
+        .final-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            text-align: left;
+            max-height: 85vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            position: relative;
+        }
+        .final-card::-webkit-scrollbar { width: 4px; }
+        .final-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+        .final-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .final-card p {
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #c0c0cb;
+            margin-bottom: 10px;
+        }
+
+        /* Efek Teks Per Kata (380ms Santai) */
+        .word-reveal {
+            opacity: 0;
+            display: inline-block;
+            transform: translateY(6px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .word-reveal.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- GALERI FOTO SLIDESHOW & VIDEO GAMEPLAY FF --- */
+        .photo-stream {
+            display: none;
+            width: 100vw;
+            margin-left: -20px;
+            padding: 0 10px;
+            position: relative;
+            z-index: 10;
+        }
+        .cinematic-film {
+            position: relative;
+            width: 100%;
+            height: 380px;
+        }
+        .film-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 10px 10px 30px 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            margin: auto;
+            opacity: 0;
+            width: 88%;
+            max-width: 340px;
+        }
+        .film-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .film-caption {
+            font-size: 0.9rem;
+            color: #333;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px) rotate(-2deg); }
+            15% { opacity: 1; transform: scale(1) translateY(0) rotate(1deg); }
+            85% { opacity: 1; transform: scale(1) translateY(0) rotate(1deg); }
+            100% { opacity: 0; transform: scale(1.1) translateY(-20px) rotate(3deg); }
+        }
+
+        .film-card:nth-child(1) { animation: fadeInOut 4s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 0.5s; }
+        .film-card:nth-child(2) { animation: fadeInOut 4s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 4.5s; }
+        .film-card:nth-child(3) { animation: fadeInOut 4s cubic-bezier(0.25, 1, 0.5, 1) forwards; animation-delay: 8.5s; }
+
+        /* Video Gameplay FF Box */
+        .video-reference-box {
+            display: none;
+            width: 100vw;
+            margin-left: -20px;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            background: rgba(10, 10, 15, 0.95);
+        }
+        .video-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #ff758c;
+            margin-bottom: 8px;
+        }
+        .video-reference-box video {
+            width: 90%;
+            max-width: 340px;
+            height: 220px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            background: #000;
+        }
+
+        /* Vinyl Player */
+        .vinyl-box {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.35);
+            padding: 8px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .vinyl-disc {
+            width: 32px; height: 32px;
+            background: #111;
+            border-radius: 50%;
+            border: 3px solid #333;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            animation: spin 3s linear infinite paused;
+            flex-shrink: 0;
+        }
+        .vinyl-disc.playing { animation-play-state: running; }
+        .vinyl-disc::after { content: ''; width: 8px; height: 8px; background: #ff758c; border-radius: 50%; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .song-info { margin-left: 10px; text-align: left; }
+        .song-title { font-size: 0.75rem; font-weight: 600; color: #fff; }
+        .song-status { font-size: 0.65rem; color: #a0a0ab; }
+
+        .btn-luxury {
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(255, 117, 140, 0.4);
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        .btn-luxury:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 117, 140, 0.6); }
+        
+        .nav-links { display: flex; justify-content: space-between; width: 100%; margin-top: 10px; font-size: 0.8rem; color: #a0a0ab; }
+        .nav-links span { cursor: pointer; transition: 0.2s; }
+        .nav-links span:hover { color: #ff758c; }
+    </style>
+</head>
+<body>
+
+<div class="container" style="position: relative;">
+    
+    <!-- Misi Lampu Neon -->
+    <div class="neon-light" id="light1" onclick="lightUp(1)"></div>
+    <div class="neon-light" id="light2" onclick="lightUp(2)"></div>
+    <div class="neon-light" id="light3" onclick="lightUp(3)"></div>
+
+    <!-- TAHAP 1: PASSCODE SCREEN -->
+    <div id="screen-lock" class="screen active">
+        <div class="lock-icon" style="margin-bottom: 2px; width: 45px; height: 45px; font-size: 1.3rem;">🔒</div>
+        <h1 class="title">Restricted Access</h1>
+        
+        <!-- Beruang Full-Body -->
+        <div class="bear-container" id="lockBear">
+            <div class="bear-ear left"></div>
+            <div class="bear-ear right"></div>
+            <div class="bear-head">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="blush left"></div>
+                <div class="blush right"></div>
+                <div class="nose"></div>
+                <div class="mouth"><div class="tongue"></div></div>
+            </div>
+            <div class="bear-body">
+                <div class="arm left"></div>
+                <div class="arm right"></div>
+                <div class="leg left"></div>
+                <div class="leg right"></div>
+            </div>
+        </div>
+
+        <div class="mission-bubble" id="missionText">
+            🧸: "Kota malamnya gelap! Tap <b>3 lampu neon</b> di sudut layar untuk mencari petunjuk angka passcode gembok!" (0/3)
+        </div>
+
+        <div class="passcode-dots" id="dotContainer">
+            <div class="dot" id="d1"></div>
+            <div class="dot" id="d2"></div>
+            <div class="dot" id="d3"></div>
+        </div>
+
+        <div class="keypad-grid">
+            <button class="num-btn" onclick="pressNum('1')">1</button>
+            <button class="num-btn" onclick="pressNum('2')">2</button>
+            <button class="num-btn" onclick="pressNum('3')">3</button>
+            <button class="num-btn" onclick="pressNum('4')">4</button>
+            <button class="num-btn" onclick="pressNum('5')">5</button>
+            <button class="num-btn" onclick="pressNum('6')">6</button>
+            <button class="num-btn" onclick="pressNum('7')">7</button>
+            <button class="num-btn" onclick="pressNum('8')">8</button>
+            <button class="num-btn" onclick="pressNum('9')">9</button>
+            <button class="num-btn" style="visibility: hidden;"></button>
+            <button class="num-btn" onclick="pressNum('0')">0</button>
+            <button class="num-btn" onclick="clearPass()">⌫</button>
+        </div>
+    </div>
+
+    <!-- TAHAP 2: CHAT & BERUANG -->
+    <div id="screen-chat" class="screen">
+        <div class="chat-card">
+            <div class="bear-container success-jump" id="bearBox">
+                <div class="bear-ear left"></div>
+                <div class="bear-ear right"></div>
+                <div class="bear-head">
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
+                    <div class="blush left"></div>
+                    <div class="blush right"></div>
+                    <div class="nose"></div>
+                    <div class="mouth"><div class="tongue"></div></div>
+                </div>
+                <div class="bear-body">
+                    <div class="arm left"></div>
+                    <div class="arm right"></div>
+                    <div class="leg left"></div>
+                    <div class="leg right"></div>
+                </div>
+            </div>
+            
+            <div class="chat-bubble" id="chatText">
+                🧸: "Yey berhasil memecahkan petunjuk & buka gemboknya! Aku ada sesuatu penting nih buat kamu..." 🤭
+            </div>
+            <div id="chatActionArea">
+                <button class="btn-luxury" style="display: block;" onclick="nextChatStep()">Klik untuk Lanjut</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAHAP 3: MEMORY LANE -->
+    <div id="screen-timeline" class="screen">
+        <h1 class="title" style="margin-bottom: 15px; font-size: 1.4rem;">Memory Lane 🎞️</h1>
+        <div class="timeline-box">
+            <div class="story-card">
+                <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=500&q=80" alt="Memory 1">
+                <div class="story-year">Babak 01 • Awal Mula</div>
+                <div class="story-title">Masa-masa Jaim</div>
+                <div class="story-desc">Pertama kali kenal keliatan pendiam dan jaim banget. Enggak nyangka sekarang malah jadi partner paling barbar dan tahu semua aib masing-masing wkwk.</div>
+            </div>
+            <div class="story-card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" alt="Memory 2">
+                <div class="story-year">Babak 02 • Sering Bareng</div>
+                <div class="story-title">Tempat Curhat & Sambat</div>
+                <div class="story-desc">Dari urusan tugas/kerjaan numpuk sampai drama percintaan yang enggak ada habisnya. Terima kasih selalu ada buat dengerin sambatan tiap malam!</div>
+            </div>
+            <div class="story-card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="Memory 3">
+                <div class="story-year">Babak 03 • Hari Ini</div>
+                <div class="story-title">Level Up Day! 🎉</div>
+                <div class="story-desc">Sekarang umur bertambah lagi. Semoga makin bijak, rezekinya lancar, dan tetap jadi sahabat yang seru diajak susah maupun senang.</div>
+            </div>
+        </div>
+        <button class="btn-luxury" style="display: block;" onclick="goToFinal()">Buka Pesan Terakhir 🤍</button>
+    </div>
+
+    <!-- TAHAP 4: FINAL SCREEN -->
+    <div id="screen-main" class="screen">
+        <div class="final-card" id="finalCardContent">
+            <h2>To My Bestie, ✨</h2>
+            <p>Terima kasih ya sudah jadi bestie terbaik yang selalu sabar menghadapi segala tingkah koplak dan sambatanku tiap hari... 🤍</p>
+            <p>Dari partner ngerjain tugas numpuk, tempat curhat tengah malam, sampai partner kulineran pedes yang gak ada obatnya.</p>
+            <p>Semoga di umur yang baru ini rezekinya makin lancar, semua impian kerenmu tercapai, dan bahagia selalu...</p>
+            <p>Dan yang paling penting: jangan pernah berubah jadi orang nyebelin ya wkwk! 😜</p>
+            <p><b>HAPPY BIRTHDAY TO MY BESTIE! 🎂🎉🥳</b></p>
+
+            <!-- Beruang Muncul dari Samping Membawa Topi Ekstra -->
+            <div class="bear-container walking-bear" id="finalBear">
+                <div class="bear-speech" id="bearSpeechText">Ambil topi ini & pakai ya! 🥳</div>
+                <div class="party-hat"></div>
+                <div class="bear-ear left"></div>
+                <div class="bear-ear right"></div>
+                <div class="bear-head">
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
+                    <div class="blush left"></div>
+                    <div class="blush right"></div>
+                    <div class="nose"></div>
+                    <div class="mouth"><div class="tongue"></div></div>
+                </div>
+                <div class="bear-body">
+                    <div class="arm left"></div>
+                    <div class="arm right">
+                        <div class="held-hat" id="interactiveHat" onclick="wearHatAndCelebrate()" title="Klik untuk ambil topi & kembang api! 🎉">🥳</div>
+                    </div>
+                    <div class="leg left"></div>
+                    <div class="leg right"></div>
+                </div>
+            </div>
+            
+            <!-- Galeri Foto Slideshow -->
+            <div class="photo-stream" id="cinematicPhotoRoll">
+                <div class="cinematic-film">
+                    <div class="film-card">
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=700&q=80" alt="Foto 1">
+                        <div class="film-caption">"Partner Paling Seru ✨"</div>
+                    </div>
+                    <div class="film-card">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=80" alt="Foto 2">
+                        <div class="film-caption">"Pendengar Terbaikku 🤍"</div>
+                    </div>
+                    <div class="film-card">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=80" alt="Foto 3">
+                        <div class="film-caption">"Selalu Kompak Terus Ya! 🎂"</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Gameplay FF (Ganti 'gameplay-ff.mp4' dengan nama file video Anda) -->
+            <div class="video-reference-box" id="videoReferenceBox">
+                <div class="video-title">🎥 Video Gameplay Free Fire Kita</div>
+                <video id="refVideo" controls playsinline preload="auto">
+                    <source src="gameplay-ff.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung video.
+                </video>
+            </div>
+
+            <!-- Vinyl Music Player -->
+            <div class="vinyl-box" onclick="toggleMusic()">
+                <div class="vinyl-disc" id="vinyl"></div>
+                <div class="song-info">
+                    <div class="song-title">A Thousand Years 🎵</div>
+                    <div class="song-status" id="songStatus">Click to Play/Pause (Christina Perri)</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-luxury" id="btnConfetti" style="display: none;" onclick="wearHatAndCelebrate()">Kirim Ledakan Kembang Api 🎉</button>
+        
+        <div class="nav-links">
+            <span onclick="lockApp()">Lock Again 🔒</span>
+            <span onclick="shareWA()">Share WhatsApp 💬</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let codeInput = "";
+    const correctPin = "143";
+    let isPlaying = false;
+    let chatStep = 0;
+    let mauAttempt = 0;
+    
+    let litLights = { 1: false, 2: false, 3: false };
+
+    const bgAudio = new Audio("https://archive.org/download/JhePlalist/A%20Thousand%20Years%20-%20Christina%20Perri.mp3");
+    bgAudio.loop = true;
+
+    const emotionalAudio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
+    emotionalAudio.loop = true;
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSound(type) {
+        if (!audioCtx) return;
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        let now = audioCtx.currentTime;
+
+        if (type === 'tap') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(450, now);
+            osc.frequency.linearRampToValueAtTime(700, now + 0.08);
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+            osc.start(now);
+            osc.stop(now + 0.08);
+        } else if (type === 'error') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(140, now);
+            osc.frequency.linearRampToValueAtTime(70, now + 0.2);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+            osc.start(now);
+            osc.stop(now + 0.2);
+        } else if (type === 'success') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.setValueAtTime(650, now + 0.1);
+            osc.frequency.setValueAtTime(950, now + 0.2);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+            osc.start(now);
+            osc.stop(now + 0.3);
+        }
+    }
+
+    // Ubah teks di dalam elemen finalCardContent menjadi per-kata terbungkus span
+    function prepareWordReveal() {
+        const container = document.getElementById('finalCardContent');
+        const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+        let node;
+        const textNodes = [];
+        while (node = walker.nextNode()) {
+            if (node.parentNode.id !== 'bearSpeechText' && !node.parentNode.closest('.photo-stream') && !node.parentNode.closest('.video-reference-box')) {
+                textNodes.push(node);
+            }
+        }
+
+        textNodes.forEach(textNode => {
+            const words = textNode.nodeValue.split(/(\s+)/);
+            const fragment = document.createDocumentFragment();
+            words.forEach(word => {
+                if (word.trim() === '') {
+                    fragment.appendChild(document.createTextNode(word));
+                } else {
+                    const span = document.createElement('span');
+                    span.className = 'word-reveal';
+                    span.textContent = word;
+                    fragment.appendChild(span);
+                }
+            });
+            textNode.parentNode.replaceChild(fragment, textNode);
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        prepareWordReveal();
+    });
+
+    function lightUp(id) {
+        if (litLights[id]) return;
+        litLights[id] = true;
+        playSound('tap');
+        
+        const lightEl = document.getElementById(`light${id}`);
+        lightEl.classList.add("lit");
+
+        let count = Object.values(litLights).filter(Boolean).length;
+        const missionText = document.getElementById("missionText");
+        const bear = document.getElementById("lockBear");
+
+        bear.className = "bear-container happy";
+        setTimeout(() => { bear.className = "bear-container"; }, 500);
+
+        if (count === 1) {
+            missionText.innerHTML = `🧸: "Lampu 1 nyala! 💡 <b>Clue 1</b>: Hitung jumlah huruf pada kata pertama kalimat rahasia ('I')."`;
+        } else if (count === 2) {
+            missionText.innerHTML = `🧸: "Lampu 2 nyala! 💡 <b>Clue 2</b>: Hitung jumlah huruf pada kata kedua kalimat rahasia ('Love')."`;
+        } else if (count === 3) {
+            playSound('success');
+            missionText.innerHTML = `🧸: "Lampu 3 nyala! 💡 <b>Clue 3</b>: Hitung jumlah huruf pada kata ketiga kalimat rahasia ('You').<br>✨ <i>Susun digit angka dari ketiga clue di atas secara berurutan!</i>"`;
+        }
+    }
+
+    function pressNum(num) {
+        playSound('tap');
+        if(codeInput.length < 3) { codeInput += num; updateDots(); }
+        if(codeInput.length === 3) {
+            setTimeout(() => {
+                if(codeInput === correctPin) {
+                    playSound('success');
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
+                    switchScreen('screen-chat');
+                } else {
+                    playSound('error');
+                    const bear = document.getElementById("lockBear");
+                    bear.className = "bear-container teasing";
+                    const missionText = document.getElementById("missionText");
+                    missionText.innerHTML = `🧸: "Wleee salah kodenya! Coba hitung ulang jumlah huruf petunjuknya wkwk 😜"`;
+
+                    const dc = document.getElementById("dotContainer");
+                    dc.classList.add("shake");
+                    setTimeout(() => {
+                        dc.classList.remove("shake");
+                        bear.className = "bear-container";
+                    }, 600);
+                    codeInput = "";
+                    updateDots();
+                }
+            }, 200);
+        }
+    }
+
+    function clearPass() { codeInput = ""; updateDots(); }
+
+    function updateDots() {
+        document.getElementById("d1").classList.toggle("filled", codeInput.length > 0);
+        document.getElementById("d2").classList.toggle("filled", codeInput.length > 1);
+        document.getElementById("d3").classList.toggle("filled", codeInput.length > 2);
+    }
+
+    function switchScreen(id) {
+        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function nextChatStep() {
+        chatStep++;
+        const chatText = document.getElementById("chatText");
+        const actionArea = document.getElementById("chatActionArea");
+        const bearBox = document.getElementById("bearBox");
+
+        if (chatStep === 1) {
+            bearBox.className = "bear-container happy";
+            chatText.innerText = "🧸: \"Ciee.. Ada yang ultah nih hari ini! 🎉🥳 Selamat ya!\"";
+        } else if (chatStep === 2) {
+            bearBox.className = "bear-container success-jump";
+            chatText.innerText = "🧸: \"Nambah tua aja ya, moga panjang umur biar tiap tahun bisa traktir aku wkwk 😂🎂\"";
+        } else if (chatStep === 3) {
+            mauAttempt = 0; 
+            bearBox.className = "bear-container happy";
+            chatText.innerText = "🧸: \"Mau kado spesial gak nih dari aku? 🎁🤭\"";
+            actionArea.innerHTML = `
+                <div class="chat-btn-group">
+                    <button class="btn-luxury" style="display:block;" id="btnMau" style="background:#2ed573; position: relative; transition: 0.15s ease;" onclick="handleMauClick(event)">Mau</button>
+                    <button class="btn-luxury" style="display:block; background:#ff4757;" onclick="answerGift(false)">Engga</button>
+                </div>
+            `;
+        } else if (chatStep === 4) {
+            bearBox.className = "bear-container success-jump";
+            chatText.innerText = "🧸: \"Happy Level Up Day!! 🥳✨ Yuk intip perjalanan kisah kita di bawah!\"";
+            actionArea.innerHTML = `<button class="btn-luxury" style="display:block;" onclick="switchToTimeline()">Lihat Memory Lane 🎞️</button>`;
+        }
+    }
+
+    function handleMauClick(event) {
+        event.preventDefault();
+        mauAttempt++;
+        playSound('tap');
+        const btn = document.getElementById("btnMau");
+        const chatText = document.getElementById("chatText");
+        const bearBox = document.getElementById("bearBox");
+
+        if (mauAttempt < 3) {
+            bearBox.className = "bear-container teasing";
+            const randomX = (Math.random() - 0.5) * 180;
+            const randomY = (Math.random() - 0.5) * 90;
+            btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            chatText.innerText = "🧸: \"Eits, gak kena! Kejar terus tombolnya wkwk 😜\"";
+        } else {
+            answerGift(true);
+        }
+    }
+
+    function answerGift(isMau) {
+        const chatText = document.getElementById("chatText");
+        const actionArea = document.getElementById("chatActionArea");
+        const bearBox = document.getElementById("bearBox");
+
+        if (isMau) {
+            playSound('success');
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            bearBox.className = "bear-container teasing";
+            chatText.innerText = "🧸: \"wleee ngarep km bau hahahahaha 😜🤪 (Canda wkwk)\";";
+        } else {
+            playSound('error');
+            bearBox.className = "bear-container happy";
+            chatText.innerText = "🧸: \"Dih, kok engga mau? Padahal kado rahasia lho 🤭\"";
+        }
+        
+        setTimeout(() => { chatStep = 3; nextChatStep(); }, 3500);
+    }
+
+    function switchToTimeline() {
+        if (isPlaying) bgAudio.pause();
+        emotionalAudio.play().catch(e => console.log("Audio autoplay restricted"));
+        switchScreen('screen-timeline');
+    }
+
+    // --- ALUR FINAL SCREEN (TYPEWRITER 380ms PER KATA) ---
+    function goToFinal() {
+        emotionalAudio.pause();
+        emotionalAudio.currentTime = 0;
+        switchScreen('screen-main');
+
+        // Reset semua kata
+        const wordElements = document.querySelectorAll('.word-reveal');
+        wordElements.forEach(el => el.classList.remove('show'));
+
+        const bear = document.getElementById("finalBear");
+        bear.style.display = "none";
+
+        // Tampilkan kata satu per satu dengan jeda persis 380ms per kata
+        wordElements.forEach((wordEl, index) => {
+            setTimeout(() => {
+                wordEl.classList.add('show');
+                if (index % 3 === 0) playSound('tap');
+            }, index * 380);
+        });
+
+        // Setelah seluruh kata selesai muncul, beruang berjalan masuk membawa topi
+        const totalDuration = wordElements.length * 380 + 1000;
+        setTimeout(() => {
+            bear.style.display = "block";
+            bear.classList.remove("walking-bear", "walking-out-bear");
+            void bear.offsetWidth;
+            bear.classList.add("walking-bear");
+
+            setTimeout(() => {
+                const speech = document.getElementById("bearSpeechText");
+                speech.classList.add("show");
+                playSound('success');
+            }, 3200);
+        }, totalDuration);
+    }
+
+    // Aksi Klik Topi: Confetti -> Slideshow Foto -> Video Gameplay FF (Buka Tombol Play) -> Beruang Pamit
+    function wearHatAndCelebrate() {
+        const hat = document.getElementById("interactiveHat");
+        if (hat.classList.contains("taken")) return;
+        hat.classList.add("taken");
+
+        // 1. Sembunyikan dialog & beruang sementara
+        const speech = document.getElementById("bearSpeechText");
+        speech.classList.remove("show");
+        const bear = document.getElementById("finalBear");
+        bear.style.display = "none";
+
+        // 2. Ledakan kembang api meriah
+        confetti({ particleCount: 220, spread: 130, origin: { y: 0.5 }, colors: ['#ff758c', '#ffd1dc', '#2ed573', '#ffa502', '#3742fa', '#ff4757'] });
+        setTimeout(() => {
+            confetti({ particleCount: 150, angle: 60, spread: 100, origin: { x: 0, y: 0.6 } });
+            confetti({ particleCount: 150, angle: 120, spread: 100, origin: { x: 1, y: 0.6 } });
+        }, 400);
+
+        playSound('success');
+
+        // 3. Tampilkan Slideshow Foto
+        const roll = document.getElementById("cinematicPhotoRoll");
+        roll.style.display = "block";
+
+        // 4. Setelah slideshow foto selesai (~12.5 detik), tampilkan Video Gameplay FF dengan tombol kontrol (mencegah layar hitam akibat blokir browser)
+        setTimeout(() => {
+            roll.style.display = "none";
+            const videoBox = document.getElementById("videoReferenceBox");
+            const refVideo = document.getElementById("refVideo");
+            videoBox.style.display = "block";
+            
+            // Berikan jeda sebentar agar browser siap merender video lokal
+            refVideo.load();
+            refVideo.play().catch(e => {
+                console.log("Autoplay diblokir browser, pengguna dapat menekan tombol play manual.");
+            });
+
+            // 5. Durasi video gameplay diputar otomatis, lalu beruang muncul pamit
+            setTimeout(() => {
+                videoBox.style.display = "none";
+                refVideo.pause();
+
+                document.getElementById("btnConfetti").style.display = "block";
+                bear.style.display = "block";
+                speech.innerHTML = "Terima kasih sudah melewati hari-hari seru bareng aku. Semoga di usia baru ini semua mimpimu terwujud ya! Aku pamit undur diri dulu, <i>Happy Birthday!</i> ✨🤍";
+                speech.classList.add("show");
+                playSound('success');
+
+                setTimeout(() => {
+                    speech.classList.remove("show");
+                    bear.classList.remove("walking-bear");
+                    void bear.offsetWidth;
+                    bear.classList.add("walking-out-bear"); // Beruang berjalan keluar layar
+                }, 6000);
+
+            }, 9500); // Sesuaikan dengan durasi video (9.5 detik)
+
+        }, 12500); // Durasi slideshow foto
+    }
+
+    function triggerConfettiAgain() {
+        confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+        playSound('tap');
+    }
+
+    function toggleMusic() {
+        const vinyl = document.getElementById("vinyl");
+        const status = document.getElementById("songStatus");
+        if(!isPlaying) {
+            bgAudio.play();
+            vinyl.classList.add("playing");
+            status.innerText = "Now Playing: A Thousand Years 🎶";
+            isPlaying = true;
+        } else {
+            bgAudio.pause();
+            vinyl.classList.remove("playing");
+            status.innerText = "Paused (Click to play)";
+            isPlaying = false;
+        }
+    }
+
+    function lockApp() {
+        if(isPlaying) toggleMusic();
+        emotionalAudio.pause();
+        emotionalAudio.currentTime = 0;
+        codeInput = "";
+        updateDots();
+        chatStep = 0;
+        litLights = { 1: false, 2: false, 3: false };
+        
+        document.querySelectorAll('.neon-light').forEach(el => el.classList.remove("lit"));
+        
+        // Reset Final Screen
+        document.querySelectorAll('.word-reveal').forEach(el => el.classList.remove('show'));
+        document.getElementById("cinematicPhotoRoll").style.display = "none";
+        document.getElementById("videoReferenceBox").style.display = "none";
+        document.getElementById("refVideo").pause();
+        document.getElementById("interactiveHat").classList.remove("taken");
+        document.getElementById("finalBear").style.display = "none";
+        document.getElementById("bearSpeechText").classList.remove("show");
+        document.getElementById("btnConfetti").style.display = "none";
+
+        document.getElementById("missionText").innerHTML = `🧸: "Kota malamnya gelap! Tap <b>3 lampu neon</b> di sudut layar untuk mencari petunjuk angka passcode gembok!" (0/3)`;
+        document.getElementById("lockBear").className = "bear-container";
+        document.getElementById("chatText").innerText = "🧸: \"Halo! Aku ada sesuatu penting nih buat kamu...\" 🤭";
+        document.getElementById("chatActionArea").innerHTML = `<button class="btn-luxury" style="display:block;" onclick="nextChatStep()">Klik untuk Lanjut</button>`;
+        switchScreen('screen-lock');
+    }
+
+    function shareWA() {
+        const text = encodeURIComponent("Makasih ya udah ngucapin ultah buat aku! >_<");
+        window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
