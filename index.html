@@ -722,7 +722,7 @@
         </div>
     </div>
 
-    <!-- TAHAP 3: MEMORY LANE -->
+    <!-- TAHAP 3: MEMORY LANE (Gunakan foto memory1.jpeg, memory2.jpeg, memory3.jpeg) -->
     <div id="screen-timeline" class="screen">
         <h1 class="title" style="margin-bottom: 15px; font-size: 1.4rem;">Memory Lane 🎞️</h1>
         <div class="timeline-box" id="timelineContent">
@@ -782,19 +782,19 @@
                 </div>
             </div>
             
-            <!-- Galeri Foto Slideshow -->
+            <!-- Galeri Foto Slideshow Akhir (Gunakan foto final1.jpeg, final2.jpeg, final3.jpeg) -->
             <div class="photo-stream" id="cinematicPhotoRoll">
                 <div class="cinematic-film">
                     <div class="film-card">
-                        <img src="memory1.jpeg" alt="Foto 1">
+                        <img src="final1.jpeg" alt="Foto 1">
                         <div class="film-caption">"Partner Paling Seru ✨"</div>
                     </div>
                     <div class="film-card">
-                        <img src="memory2.jpeg" alt="Foto 2">
+                        <img src="final2.jpeg" alt="Foto 2">
                         <div class="film-caption">"Pendengar Terbaikku 🤍"</div>
                     </div>
                     <div class="film-card">
-                        <img src="memory3.jpeg" alt="Foto 3">
+                        <img src="final3.jpeg" alt="Foto 3">
                         <div class="film-caption">"Selalu Kompak Terus Ya! 🎂"</div>
                     </div>
                 </div>
@@ -813,8 +813,8 @@
             <div class="vinyl-box" onclick="toggleMusic()">
                 <div class="vinyl-disc" id="vinyl"></div>
                 <div class="song-info">
-                    <div class="song-title">A Thousand Years 🎵</div>
-                    <div class="song-status" id="songStatus">Click to Play/Pause (Christina Perri)</div>
+                    <div class="song-title" id="songTitleDisplay">Music 🎵</div>
+                    <div class="song-status" id="songStatus">Click to Play/Pause</div>
                 </div>
             </div>
         </div>
@@ -851,9 +851,13 @@
     
     let litLights = { 1: false, 2: false, 3: false };
 
-    // Lagu utama A Thousand Years yang otomatis berputar dari awal Memory Lane
-    const bgAudio = new Audio("https://archive.org/download/JhePlalist/A%20Thousand%20Years%20-%20Christina%20Perri.mp3");
-    bgAudio.loop = true;
+    // Audio 1: shape.mpeg untuk Memory Lane
+    const shapeAudio = new Audio("shape.mpeg");
+    shapeAudio.loop = true;
+
+    // Audio 2: night.mpeg untuk halaman Final / Pesan Terakhir
+    const nightAudio = new Audio("night.mpeg");
+    nightAudio.loop = true;
 
     const emotionalAudio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
     emotionalAudio.loop = true;
@@ -1071,27 +1075,25 @@
         setTimeout(() => { chatStep = 3; nextChatStep(); }, 3500);
     }
 
-    // Fungsi Masuk ke Memory Lane sekaligus Otomatis Memutar Lagu A Thousand Years & Typewriter 380ms
+    // Masuk ke Memory Lane: Putar shape.mpeg otomatis & Typewriter 380ms
     function switchToTimeline() {
         if (emotionalAudio) {
             emotionalAudio.pause();
             emotionalAudio.currentTime = 0;
         }
         
-        // Memutar lagu A Thousand Years secara otomatis dari awal kata di Memory Lane
-        bgAudio.play().then(() => {
+        shapeAudio.play().then(() => {
             isPlaying = true;
             const vinyl = document.getElementById("vinyl");
             if (vinyl) vinyl.classList.add("playing");
-            const status = document.getElementById("songStatus");
-            if (status) status.innerText = "Now Playing: A Thousand Years 🎶";
+            document.getElementById("songTitleDisplay").innerText = "Shape of You 🎵";
+            document.getElementById("songStatus").innerText = "Now Playing 🎶";
         }).catch(e => {
-            console.log("Autoplay musik dicegah browser, silakan klik tombol vinyl jika diperlukan.");
+            console.log("Autoplay musik dicegah browser.");
         });
 
         switchScreen('screen-timeline');
 
-        // Jalankan efek typewriter per-kata dengan jeda 380ms untuk teks di dalam Memory Lane
         const timelineContainer = document.getElementById('screen-timeline');
         const wordElements = timelineContainer.querySelectorAll('.word-reveal');
         wordElements.forEach(el => el.classList.remove('show'));
@@ -1104,8 +1106,23 @@
         });
     }
 
-    // --- ALUR FINAL SCREEN (TYPEWRITER 380ms PER KATA) ---
+    // Pindah ke Halaman Final: Matikan shape.mpeg, otomatis putar night.mpeg
     function goToFinal() {
+        if (shapeAudio) {
+            shapeAudio.pause();
+            shapeAudio.currentTime = 0;
+        }
+
+        nightAudio.play().then(() => {
+            isPlaying = true;
+            const vinyl = document.getElementById("vinyl");
+            if (vinyl) vinyl.classList.add("playing");
+            document.getElementById("songTitleDisplay").innerText = "Night Music 🎵";
+            document.getElementById("songStatus").innerText = "Now Playing 🎶";
+        }).catch(e => {
+            console.log("Autoplay musik dicegah browser.");
+        });
+
         switchScreen('screen-main');
 
         const finalCard = document.getElementById('finalCardContent');
@@ -1115,7 +1132,6 @@
         const bear = document.getElementById("finalBear");
         bear.style.display = "none";
 
-        // Tampilkan kata satu per satu dengan jeda persis 380ms per kata
         wordElements.forEach((wordEl, index) => {
             setTimeout(() => {
                 wordEl.classList.add('show');
@@ -1216,13 +1232,17 @@
     function toggleMusic() {
         const vinyl = document.getElementById("vinyl");
         const status = document.getElementById("songStatus");
+        
+        let activeAudio = document.getElementById('screen-main').classList.contains('active') ? nightAudio : shapeAudio;
+
         if(!isPlaying) {
-            bgAudio.play();
+            activeAudio.play();
             vinyl.classList.add("playing");
-            status.innerText = "Now Playing: A Thousand Years 🎶";
+            status.innerText = "Now Playing 🎶";
             isPlaying = true;
         } else {
-            bgAudio.pause();
+            shapeAudio.pause();
+            nightAudio.pause();
             vinyl.classList.remove("playing");
             status.innerText = "Paused (Click to play)";
             isPlaying = false;
@@ -1230,16 +1250,20 @@
     }
 
     function lockApp() {
-        if(isPlaying) bgAudio.pause();
+        if(isPlaying) {
+            shapeAudio.pause();
+            nightAudio.pause();
+        }
         isPlaying = false;
         const vinyl = document.getElementById("vinyl");
         if (vinyl) vinyl.classList.remove("playing");
         const status = document.getElementById("songStatus");
-        if (status) status.innerText = "Click to Play/Pause (Christina Perri)";
+        if (status) status.innerText = "Click to Play/Pause";
 
         emotionalAudio.pause();
         emotionalAudio.currentTime = 0;
-        bgAudio.currentTime = 0;
+        shapeAudio.currentTime = 0;
+        nightAudio.currentTime = 0;
         codeInput = "";
         updateDots();
         chatStep = 0;
