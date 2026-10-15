@@ -725,7 +725,7 @@
     <!-- TAHAP 3: MEMORY LANE -->
     <div id="screen-timeline" class="screen">
         <h1 class="title" style="margin-bottom: 15px; font-size: 1.4rem;">Memory Lane 🎞️</h1>
-        <div class="timeline-box">
+        <div class="timeline-box" id="timelineContent">
             <div class="story-card">
                 <img src="memory1.jpeg" alt="Memory 1">
                 <div class="story-year">Babak 01 • Awal Mula</div>
@@ -786,15 +786,15 @@
             <div class="photo-stream" id="cinematicPhotoRoll">
                 <div class="cinematic-film">
                     <div class="film-card">
-                        <img src="memory1.jpg" alt="Foto 1">
+                        <img src="memory1.jpeg" alt="Foto 1">
                         <div class="film-caption">"Partner Paling Seru ✨"</div>
                     </div>
                     <div class="film-card">
-                        <img src="memory2.jpg" alt="Foto 2">
+                        <img src="memory2.jpeg" alt="Foto 2">
                         <div class="film-caption">"Pendengar Terbaikku 🤍"</div>
                     </div>
                     <div class="film-card">
-                        <img src="memory3.jpg" alt="Foto 3">
+                        <img src="memory3.jpeg" alt="Foto 3">
                         <div class="film-caption">"Selalu Kompak Terus Ya! 🎂"</div>
                     </div>
                 </div>
@@ -851,7 +851,8 @@
     
     let litLights = { 1: false, 2: false, 3: false };
 
-    const bgAudio = new Audio("https://archive.org/download/JhePlalist/A%20Thousand%20Years%20-%20Christina%20Perri.mp3");
+    // Audio instrumental baru yang dikirimkan
+    const bgAudio = new Audio("https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=romantic-guitars-112157.mp3");
     bgAudio.loop = true;
 
     const emotionalAudio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3");
@@ -895,14 +896,24 @@
         }
     }
 
-    // Ubah teks di dalam elemen finalCardContent menjadi per-kata terbungkus span
+    // Fungsi membungkus teks menjadi per-kata untuk efek typewriter
     function prepareWordReveal() {
-        const container = document.getElementById('finalCardContent');
+        // Final screen
+        const finalContainer = document.getElementById('finalCardContent');
+        processContainerText(finalContainer);
+
+        // Timeline / Memory Lane screen
+        const timelineContainer = document.getElementById('timelineContent');
+        processContainerText(timelineContainer);
+    }
+
+    function processContainerText(container) {
+        if (!container) return;
         const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
         let node;
         const textNodes = [];
         while (node = walker.nextNode()) {
-            if (node.parentNode.id !== 'bearSpeechText' && !node.parentNode.closest('.photo-stream') && !node.parentNode.closest('.video-reference-box')) {
+            if (node.parentNode.id !== 'bearSpeechText' && !node.parentNode.closest('.photo-stream') && !node.parentNode.closest('.video-reference-box') && !node.parentNode.closest('img')) {
                 textNodes.push(node);
             }
         }
@@ -1062,20 +1073,46 @@
         setTimeout(() => { chatStep = 3; nextChatStep(); }, 3500);
     }
 
+    // Fungsi Masuk ke Memory Lane sekaligus Otomatis Memutar Musik dan Typewriter 380ms
     function switchToTimeline() {
-        if (isPlaying) bgAudio.pause();
-        emotionalAudio.play().catch(e => console.log("Audio autoplay restricted"));
+        if (emotionalAudio) {
+            emotionalAudio.pause();
+            emotionalAudio.currentTime = 0;
+        }
+        
+        // Memutar instrumen musik secara otomatis dari awal kata di Memory Lane
+        bgAudio.play().then(() => {
+            isPlaying = true;
+            const vinyl = document.getElementById("vinyl");
+            if (vinyl) vinyl.classList.add("playing");
+            const status = document.getElementById("songStatus");
+            if (status) status.innerText = "Now Playing: Romantic Guitar 🎶";
+        }).catch(e => {
+            console.log("Autoplay musik dicegah browser, silakan klik tombol vinyl jika diperlukan.");
+        });
+
         switchScreen('screen-timeline');
+
+        // Jalankan efek typewriter per-kata dengan jeda 380ms untuk teks di dalam Memory Lane
+        const timelineContainer = document.getElementById('screen-timeline');
+        const wordElements = timelineContainer.querySelectorAll('.word-reveal');
+        wordElements.forEach(el => el.classList.remove('show'));
+
+        wordElements.forEach((wordEl, index) => {
+            setTimeout(() => {
+                wordEl.classList.add('show');
+                if (index % 3 === 0) playSound('tap');
+            }, index * 380);
+        });
     }
 
     // --- ALUR FINAL SCREEN (TYPEWRITER 380ms PER KATA) ---
     function goToFinal() {
-        emotionalAudio.pause();
-        emotionalAudio.currentTime = 0;
         switchScreen('screen-main');
 
-        // Reset semua kata
-        const wordElements = document.querySelectorAll('.word-reveal');
+        // Reset semua kata di final screen
+        const finalCard = document.getElementById('finalCardContent');
+        const wordElements = finalCard.querySelectorAll('.word-reveal');
         wordElements.forEach(el => el.classList.remove('show'));
 
         const bear = document.getElementById("finalBear");
@@ -1191,7 +1228,7 @@
         if(!isPlaying) {
             bgAudio.play();
             vinyl.classList.add("playing");
-            status.innerText = "Now Playing: A Thousand Years 🎶";
+            status.innerText = "Now Playing: Romantic Guitar 🎶";
             isPlaying = true;
         } else {
             bgAudio.pause();
@@ -1202,9 +1239,16 @@
     }
 
     function lockApp() {
-        if(isPlaying) toggleMusic();
+        if(isPlaying) bgAudio.pause();
+        isPlaying = false;
+        const vinyl = document.getElementById("vinyl");
+        if (vinyl) vinyl.classList.remove("playing");
+        const status = document.getElementById("songStatus");
+        if (status) status.innerText = "Click to Play/Pause (Romantic Guitar)";
+
         emotionalAudio.pause();
         emotionalAudio.currentTime = 0;
+        bgAudio.currentTime = 0;
         codeInput = "";
         updateDots();
         chatStep = 0;
